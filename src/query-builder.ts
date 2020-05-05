@@ -2,7 +2,6 @@ import { Level } from './level';
 
 export class QueryBuilder {
   protected root: Level;
-  private textQuery = '';
 
   query() {
     this.root = new Level({ name: 'query' });
@@ -36,12 +35,12 @@ export class QueryBuilder {
     return this;
   }
 
-  setQuery(query: string) {
-    this.textQuery = query;
+  setQuery(level: Level) {
+    this.root = level;
     return this;
   }
 
   build() {
-    return this.root?.build() || this.textQuery;
+    return this.root.build();
   }
 }

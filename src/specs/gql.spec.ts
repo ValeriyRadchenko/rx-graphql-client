@@ -23,14 +23,14 @@ describe('gql', () => {
   }
 }`;
 
-    query = gql`
+    const result = gql`
       query {
-        level1_1(test: "string") { 
+        level1_1(test: "string") {
           level2_1
           level2_2
         }
         level1_2 {
-          level2_3 { 
+          level2_3 {
             level3_1
             level3_2
           }
@@ -40,10 +40,10 @@ describe('gql', () => {
           ... on TestType {
             level5_1
           }
-         }
+        }
       }
     `;
 
-    expect(query).toEqual(expectedResult);
+    expect(result.build()).toEqual(expectedResult);
   });
 });

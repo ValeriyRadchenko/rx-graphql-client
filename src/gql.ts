@@ -1,25 +1,36 @@
-import { TAB_SYMBOL } from './level';
+import { Level } from './level';
 
-export const gql = (query: TemplateStringsArray): string => {
+export const gql = (query: TemplateStringsArray): Level => {
   const lines = query
     .toString()
     .split('\n')
     .map((line) => line.trim())
     .filter((line) => !!line);
 
-  const tab = [];
-  let result = '';
-  for (const line of lines) {
-    if (line[0] === '}') {
-      tab.pop();
+  let index = 0;
+
+  function convert() {
+    let result = [];
+
+    for (; index < lines.length; index++) {
+      const line = lines[index];
+
+      if (line[line.length - 1] === '{') {
+        const name = line.replace(/\s*{$/, '');
+        index++;
+        result.push(new Level({ name, fields: convert() }));
+        continue;
+      }
+
+      if (line[0] === '}') {
+        return result;
+      }
+
+      result.push(new Level({ name: line }));
     }
 
-    result += tab.join('') + line + '\n';
-
-    if (line[line.length - 1] === '{') {
-      tab.push(TAB_SYMBOL);
-    }
+    return result;
   }
 
-  return result.substr(0, result.length - 1);
+  return convert()[0];
 };
