@@ -1,8 +1,6 @@
 import { gql } from '../gql';
 
 describe('gql', () => {
-  let query: string;
-
   it('should transform gql to query string', () => {
     const expectedResult = `query {
   level1_1(test: "string") {
