@@ -6,7 +6,7 @@ export interface ILevelParams {
   fields?: Level[];
 }
 
-const TAB_SYMBOL = '  ';
+export const TAB_SYMBOL = '  ';
 
 export class Level {
   constructor(private params: ILevelParams) {

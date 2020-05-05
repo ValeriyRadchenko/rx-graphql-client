@@ -35,17 +35,43 @@ describe('QueryBuilder', () => {
       .build();
 
     const expectedResult =
-    'mutation {' +
-    '\n' +
-    '  test(id: "id1") {' +
-    '\n' +
-    '    field1' +
-    '\n' +
-    '    field2' +
-    '\n' +
-    '  }' +
-    '\n' +
-    '}';
+      'mutation {' +
+      '\n' +
+      '  test(id: "id1") {' +
+      '\n' +
+      '    field1' +
+      '\n' +
+      '    field2' +
+      '\n' +
+      '  }' +
+      '\n' +
+      '}';
+
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should set text query', () => {
+    const result = new QueryBuilder().setQuery`
+        query {
+          test(id: "id1) {
+            field1
+            field2
+          }
+        }
+      `.build();
+
+    const expectedResult =
+      'query {' +
+      '\n' +
+      '  test(id: "id1) {' +
+      '\n' +
+      '    field1' +
+      '\n' +
+      '    field2' +
+      '\n' +
+      '  }' +
+      '\n' +
+      '}';
 
     expect(result).toEqual(expectedResult);
   });
