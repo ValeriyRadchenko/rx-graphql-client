@@ -22,10 +22,11 @@ describe('gql', () => {
     }
   }
 }`;
-
+    const param = 'string'
     const result = gql`
+      #test
       query {
-        level1_1(test: "string") {
+        level1_1(test: "${param}") { #test
           level2_1
           level2_2
         }
