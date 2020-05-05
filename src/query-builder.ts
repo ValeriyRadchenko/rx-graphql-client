@@ -1,9 +1,8 @@
 import { Level } from './level';
-import { gql } from './gql';
 
 export class QueryBuilder {
   protected root: Level;
-  private textQuery: string = '';
+  private textQuery = '';
 
   query() {
     this.root = new Level({ name: 'query' });
@@ -37,8 +36,8 @@ export class QueryBuilder {
     return this;
   }
 
-  setQuery(query: TemplateStringsArray) {
-    this.textQuery = gql(query);
+  setQuery(query: string) {
+    this.textQuery = query;
     return this;
   }
 

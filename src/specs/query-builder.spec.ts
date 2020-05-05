@@ -1,5 +1,6 @@
 import { QueryBuilder } from '../query-builder';
 import { Level } from '../level';
+import { gql } from '../gql';
 
 describe('QueryBuilder', () => {
   it('should build query', () => {
@@ -51,19 +52,21 @@ describe('QueryBuilder', () => {
   });
 
   it('should set text query', () => {
-    const result = new QueryBuilder().setQuery`
-        query {
-          test(id: "id1) {
-            field1
-            field2
-          }
+    const query = gql`
+      query {
+        test(id: "id1") {
+          field1
+          field2
         }
-      `.build();
+      }
+    `;
+
+    const result = new QueryBuilder().setQuery(query).build();
 
     const expectedResult =
       'query {' +
       '\n' +
-      '  test(id: "id1) {' +
+      '  test(id: "id1") {' +
       '\n' +
       '    field1' +
       '\n' +
