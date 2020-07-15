@@ -1,11 +1,13 @@
 import { GraphQLClient } from '../index';
 
+const axiosInstance = jest.fn(() => Promise.resolve({ data: {} }));
+
 jest.mock('axios', () => ({
   __esModule: true,
-  default: jest.fn(() => Promise.resolve({ data: {} })),
+  default: {
+    create: () => axiosInstance,
+  },
 }));
-
-import axios from 'axios';
 
 describe('GraphQLClient', () => {
   it('should fetch query', async () => {
@@ -17,11 +19,11 @@ describe('GraphQLClient', () => {
 
     const result = await client.fetch().toPromise();
 
-    expect(axios).toBeCalledWith({
+    expect(axiosInstance).toBeCalledWith({
       data:
         '{"query":"query {\\n  test {\\n    field1\\n  }\\n}","variables":{}}',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
       method: 'post',
       url: 'http://localhost:9999/graphql',
@@ -29,4 +31,9 @@ describe('GraphQLClient', () => {
 
     expect(result.data).toEqual({});
   });
+
+  it('should return axios instance', () => {
+    const client = new GraphQLClient()
+    expect(client.getInstance()).toBeDefined();
+  })
 });

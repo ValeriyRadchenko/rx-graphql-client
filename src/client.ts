@@ -1,10 +1,20 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { from } from 'rxjs';
 import { QueryBuilder } from './query-builder';
 
 export class GraphQLClient extends QueryBuilder {
   #headers: Record<string, string> = {};
   #url: string;
+  #client: AxiosInstance;
+
+  constructor(config?: AxiosRequestConfig) {
+    super();
+    this.#client = axios.create(config);
+  }
+
+  getInstance() {
+    return this.#client;
+  }
 
   headers(headers: Record<string, string>) {
     this.#headers = headers;
@@ -20,11 +30,11 @@ export class GraphQLClient extends QueryBuilder {
 
   fetch() {
     const data = {
-        [this.root.getName()]: this.build(),
-        variables: {},
-    }
+      [this.root.getName()]: this.build(),
+      variables: {},
+    };
 
-    const request = axios({
+    const request = this.#client({
       method: 'post',
       url: this.#url,
       data: JSON.stringify(data),
