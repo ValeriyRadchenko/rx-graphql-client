@@ -4,6 +4,7 @@ import { QueryBuilder } from './query-builder';
 
 export class GraphQLClient extends QueryBuilder {
   #headers: Record<string, string> = {};
+  #variables: Record<string, any> = {};
   #url: string;
   #client: AxiosInstance;
 
@@ -22,6 +23,12 @@ export class GraphQLClient extends QueryBuilder {
     return this;
   }
 
+  variables(variables: Record<string, any>) {
+    this.#variables = variables;
+
+    return this;
+  }
+
   url(url: string) {
     this.#url = url;
 
@@ -31,7 +38,7 @@ export class GraphQLClient extends QueryBuilder {
   fetch() {
     const data = {
       [this.root.getName()]: this.build(),
-      variables: {},
+      variables: this.#variables,
     };
 
     const request = this.#client({
